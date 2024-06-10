@@ -19,6 +19,12 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix='!!', intents=intents)
 
+def is_DM():
+    def check_if_user_is_dm(ctx):
+        return ctx.author.id == 267119291294416896 or ctx.author.guild_permissions.administrator
+    return commands.check(check_if_user_is_dm)
+
+
 
 @bot.command(name='praise', help='Praise the Dungeon Master!')
 async def praise(ctx):
@@ -54,12 +60,14 @@ async def roll(ctx, dnd_dice:str):
 
 
 @bot.command(name="DMute", help="Mute all users in a voice channel except the DM")
+@is_DM()
 async def DMute(ctx):
     if ctx.author.voice:
         channel = ctx.author.voice.channel
         for member in channel.members:
             #if member.guild_permissions.administrator:
-            if member.id == 267119291294416896:
+            #if member.id == 267119291294416896:
+            if ctx.author:
                 continue
             await member.edit(mute=True)
         await ctx.send("All users have been muted except the DM.")
