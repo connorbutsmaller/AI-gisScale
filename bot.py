@@ -17,7 +17,8 @@ GUILD = os.getenv('DISCORD_GUILD')
 intents = discord.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='!!', intents=intents)
+
 
 @bot.command(name='praise', help='Praise the Dungeon Master!')
 async def praise(ctx):
@@ -29,6 +30,7 @@ async def praise(ctx):
     response = random.choice(doofy_praises)
     await ctx.send(response)
 
+
 @bot.command(name='roll', help='Roll an n-sided die x-times!')
 async def roll(ctx, dnd_dice):
     number_of_dice, number_of_sides = dnd_dice.split('d')
@@ -37,6 +39,28 @@ async def roll(ctx, dnd_dice):
         for _ in range(int(number_of_dice))
     ]
     await ctx.send(', '.join(dice))
+
+#TODO
+'''
+-roll with advantage/disadvantage
+-character info command
+-location info command
+-session name
+-season name
+-exact time and date in the world
+-current party's location
+-session recaps
+-story so far...
+-Character:
+    =backstories
+    =character notes
+    =character relationships
+    =character goals?
+    =character secrets
+    =character bonds
+-rumors
+-worldbuilding updates
+'''
 
 bot.run(TOKEN)
 
