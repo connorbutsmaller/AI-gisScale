@@ -52,6 +52,20 @@ async def roll(ctx, dnd_dice:str):
         except:
             await ctx.send('Please provide the number of dice (X) and the number of sides on the dice (Y) in the "XdY" format.')
 
+
+@bot.command(name="DMute", help="Mute all users in a voice channel except the DM")
+async def DMute(ctx):
+    if ctx.author.voice:
+        channel = ctx.author.voice.channel
+        for member in channel.members:
+            #if member.guild_permissions.administrator:
+            if member.id == 267119291294416896:
+                continue
+            await member.edit(mute=True)
+        await ctx.send("All users have been muted except the DM.")
+    else:
+        await ctx.send("You must be in a voice channel to use this command.")
+
 @bot.event
 async def on_reaction_add(reaction, user):
     if user == bot.user:
