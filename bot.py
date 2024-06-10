@@ -42,6 +42,7 @@ async def roll(ctx, dnd_dice):
 
 #TODO
 '''
+-role selection
 -roll with advantage/disadvantage
 -character info command
 -location info command
