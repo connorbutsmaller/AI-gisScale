@@ -32,17 +32,40 @@ async def praise(ctx):
 
 
 @bot.command(name='roll', help='Roll an n-sided die x-times!')
-async def roll(ctx, dnd_dice):
-    number_of_dice, number_of_sides = dnd_dice.split('d')
-    dice = [
-        str(random.choice(range(1, int(number_of_sides) + 1)))
-        for _ in range(int(number_of_dice))
-    ]
-    await ctx.send(', '.join(dice))
+async def roll(ctx, dnd_dice:str):
+    try:
+        number_of_dice, number_of_sides = dnd_dice.split('d')
+        dice = [
+            str(random.choice(range(1, int(number_of_sides) + 1)))
+            for _ in range(int(number_of_dice))
+        ]
+        await ctx.send(', '.join(dice))
+    except:
+        try:
+            number_of_dice, number_of_sides = dnd_dice.split('d')
+            if int(number_of_sides) <= 1:
+                await ctx.send('Please provide a number of sides greater than 0. AI-giscale will not allow you to break the laws of physics.')
+                return
+            elif int(number_of_dice) == 0:
+                await ctx.send('Please provide a number of dice greater than 0. AI-giscale cannot work miracles and generate numbers from nothing.')
+                return
+        except:
+            await ctx.send('Please provide the number of dice (X) and the number of sides on the dice (Y) in the "XdY" format.')
 
-@bot.event(name='reaction', help='React to a message')
-async def on_reaction_add(ctx):
-    pass
+@bot.event
+async def on_reaction_add(reaction, user):
+    if user == bot.user:
+        return
+    author = reaction.message.author
+    message = reaction.message
+
+    match reaction.emoji.name.lower():
+        case 'barbarian':
+            role_id = 1211428498476892191
+    
+    role = await author.guild.get_role(role_id)
+    await author.add_roles(role)
+    
 
 #TODO
 '''
