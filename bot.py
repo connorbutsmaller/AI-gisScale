@@ -40,6 +40,10 @@ async def roll(ctx, dnd_dice):
     ]
     await ctx.send(', '.join(dice))
 
+@bot.event(name='reaction', help='React to a message')
+async def on_reaction_add(ctx):
+    pass
+
 #TODO
 '''
 -role selection
