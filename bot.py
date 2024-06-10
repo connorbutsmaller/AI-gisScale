@@ -2,32 +2,44 @@
 import os
 import random
 import discord
-import asyncio
-import json
-import time
 from dotenv import load_dotenv
 
+#Import to get bot commands
+from discord.ext import commands
+
+
+#Loading the .env file with bot token and server name
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
-client = discord.Client(intents = discord.Intents.all())
+#globals
+intents = discord.Intents.default()
+intents.message_content = True
 
-@client.event
-async def on_ready():
-    guild = discord.utils.find(lambda g: g.name == GUILD, client.guilds)
-    await client.change_presence(activity=discord.Game('I\'ll respond faster than Aegiscale!'))
-    print(
-        f'{client.user} is connected to the following guild:\n'
-        f'{guild.name}(id: {guild.id})'
-    )
+bot = commands.Bot(command_prefix='!', intents=intents)
 
-@client.event
-async def on_member_join(member):
-    await member.create_dm()
-    await member.dm_channel.send(
-        f'Welcome to Frosthaven Hallows Academy, {member.name}!'
-    )
+@bot.command(name='praise', help='Praise the Dungeon Master!')
+async def praise(ctx):
+    doofy_praises = [
+        'Praise be to Dungeon Master Doofy!', 
+        'Doofy is the best DM!', 
+        'Doofy has never railroaded!',
+        'All hail the mighty DM!']
+    response = random.choice(doofy_praises)
+    await ctx.send(response)
+
+@bot.command(name='roll', help='Roll an n-sided die x-times!')
+async def roll(ctx, dnd_dice):
+    number_of_dice, number_of_sides = dnd_dice.split('d')
+    dice = [
+        str(random.choice(range(1, int(number_of_sides) + 1)))
+        for _ in range(int(number_of_dice))
+    ]
+    await ctx.send(', '.join(dice))
+
+bot.run(TOKEN)
+
 
 # @client.event
 # async def on_message(message):
@@ -258,4 +270,3 @@ async def on_member_join(member):
 
 
 
-client.run(TOKEN)
