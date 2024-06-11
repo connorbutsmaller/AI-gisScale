@@ -52,7 +52,7 @@ async def insult(ctx):
     await ctx.send(response)
 
 
-
+#TODO: Add a way to add more rumors in discord chat. Maybe a command to add rumors?
 @bot.command(name='rumor', help='Psst... Want to hear a rumor?')
 async def rumor(ctx, passphrase = None):
     match str(passphrase):
@@ -129,7 +129,56 @@ async def DMunmute(ctx):
     else:
         await ctx.send("You must be in a voice channel to use this command.")
 
+@bot.command(name="DMdeafen", help="Deafen all users in a voice channel except the DM")
+@is_DM()
+async def DMdeafen(ctx):
+    if ctx.author.voice:
+        channel = ctx.author.voice.channel
+        for member in channel.members:
+            if ctx.author:
+                continue
+            await member.edit(deafen=True)
+        await ctx.send("All users have been deafened. DM Doofy wants silence... or sign-language.")
+    else:
+        await ctx.send("You must be in a voice channel to use this command.")
 
+@bot.command(name="DMundeafen", help="Undeafen all users in a voice channel")
+@is_DM()
+async def DMundeafen(ctx):
+    if ctx.author.voice:
+        channel = ctx.author.voice.channel
+        for member in channel.members:
+            if ctx.author:
+                continue
+            await member.edit(deafen=False)
+        await ctx.send("All users have been undeafened! DM Doofy wants the masses to hear.")
+    else:
+        await ctx.send("You must be in a voice channel to use this command.")
+
+
+@bot.command(name="LockVC", help="Lock a voice channel")
+@is_DM()
+async def LockVC(ctx):
+    if ctx.author.voice:
+        channel = ctx.author.voice.channel
+        await channel.set_permissions(ctx.guild.default_role, connect=False)
+        await ctx.send(f"{channel.name} has been locked! The DM has started the session!")
+    else:
+        await ctx.send("You must be in a voice channel to use this command.")
+
+@bot.command(name="UnlockVC", help="Unlock a voice channel")
+@is_DM()
+async def UnlockVC(ctx):
+    if ctx.author.voice:
+        channel = ctx.author.voice.channel
+        await channel.set_permissions(ctx.guild.default_role, connect=True)
+        await ctx.send(f"{channel.name} has been unlocked! You are now free to join!")
+    else:
+        await ctx.send("You must be in a voice channel to use this command.")
+
+'''
+EVENTS
+'''
 
 #TODO: Fix this for reaction roles
 @bot.event
@@ -148,7 +197,7 @@ async def on_reaction_add(reaction, user):
 
 #TODO
 '''
-**lock/unlock voice channels
+**lock/unlock voice channels (TEST)
 -role selection
 **music playing
 -character info command
@@ -166,7 +215,7 @@ async def on_reaction_add(reaction, user):
     =character goals?
     =character secrets
     =character bonds
--rumors
+-rumors (ADD MORE)
 -worldbuilding updates
 '''
 
