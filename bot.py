@@ -25,16 +25,57 @@ def is_DM():
     return commands.check(check_if_user_is_dm)
 
 
-
 @bot.command(name='praise', help='Praise the Dungeon Master!')
 async def praise(ctx):
     doofy_praises = [
         'Praise be to Dungeon Master Doofy!', 
         'Doofy is the best DM!', 
         'Doofy has never railroaded!',
-        'All hail the mighty DM!']
+        'All hail the mighty DM!',
+        'Doofy is a master storyteller!',
+        'Doofy\'s campaigns are the best!',
+        'Doofy\'s worldbuilding is unmatched!']
     response = random.choice(doofy_praises)
     await ctx.send(response)
+
+
+@bot.command(name='insult', help='Insult the Dungeon Master!')
+async def insult(ctx):
+    doofy_insults = [
+        'Doofy thinks as fast as Aegiscale speaks!', 
+        'Doofy is the worst DM!', 
+        'Doofy has railroaded!',
+        'Doofy is a terrible storyteller!',
+        'Doofy slander will not be tolerated!',
+        'Doofy kills the hot characters!']
+    response = random.choice(doofy_insults)
+    await ctx.send(response)
+
+
+
+@bot.command(name='rumor', help='Psst... Want to hear a rumor?')
+async def rumor(ctx, passphrase = None):
+    match str(passphrase):
+        case 'doofy':
+            rumors = [
+                'I heard that Doofy is actually a dragon in disguise!',
+                'Doofy has a secret lair hidden in the mountains!',
+                'Doofy has a secret crush on the bard!',
+                'Doofy is actually a lich!',
+                'Doofy is secretly a god!'
+            ]
+            response = random.choice(rumors)
+            await ctx.send(response)
+        case _:
+            wrong_passphrase_responses = [
+                'You must be mistaken. I don\'t know what you\'re talking about.',
+                'I think you have the wrong person. I don\'t know any rumors.',
+                'I\'m sorry, I can\'t help you with that.',
+                'I don\'t know what you\'re talking about. I don\'t have any rumors to share.',
+                'Wrong guy, pal. You don\'t know, do you?'
+            ]
+            response = random.choice(wrong_passphrase_responses)
+            await ctx.send(response)
 
 
 @bot.command(name='roll', help='Roll an n-sided die x-times!')
@@ -70,10 +111,27 @@ async def DMute(ctx):
             if ctx.author:
                 continue
             await member.edit(mute=True)
-        await ctx.send("All users have been muted except the DM.")
+        await ctx.send("All users have been muted. DM Doofy hates freedom of speech.")
     else:
         await ctx.send("You must be in a voice channel to use this command.")
 
+
+@bot.command(name="DMunmute", help="Unmute all users in a voice channel")
+@is_DM()
+async def DMunmute(ctx):
+    if ctx.author.voice:
+        channel = ctx.author.voice.channel
+        for member in channel.members:
+            if ctx.author:
+                continue
+            await member.edit(mute=False)
+        await ctx.send("All users have been unmuted! DM Doofy does not wish to silence the masses any longer")
+    else:
+        await ctx.send("You must be in a voice channel to use this command.")
+
+
+
+#TODO: Fix this for reaction roles
 @bot.event
 async def on_reaction_add(reaction, user):
     if user == bot.user:
@@ -87,12 +145,12 @@ async def on_reaction_add(reaction, user):
     
     role = await author.guild.get_role(role_id)
     await author.add_roles(role)
-    
 
 #TODO
 '''
+**lock/unlock voice channels
 -role selection
--roll with advantage/disadvantage
+**music playing
 -character info command
 -location info command
 -session name
