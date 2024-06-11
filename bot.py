@@ -52,7 +52,7 @@ async def insult(ctx):
     await ctx.send(response)
 
 
-#TODO: Add a way to add more rumors in discord chat. Maybe a command to add rumors?
+#TODO: Add a way to add more rumors in discord chat. Maybe a command to add rumors? Move all rumors to a json file or smth for security
 @bot.command(name='rumor', help='Psst... Want to hear a rumor?')
 async def rumor(ctx, passphrase = None):
     match str(passphrase):
