@@ -107,8 +107,8 @@ async def DMute(ctx):
         channel = ctx.author.voice.channel
         for member in channel.members:
             #if member.guild_permissions.administrator:
-            #if member.id == 267119291294416896:
-            if ctx.author:
+            if member.id == 267119291294416896:
+            #if ctx.author:
                 continue
             await member.edit(mute=True)
         await ctx.send("All users have been muted. DM Doofy hates freedom of speech.")
@@ -122,8 +122,6 @@ async def DMunmute(ctx):
     if ctx.author.voice:
         channel = ctx.author.voice.channel
         for member in channel.members:
-            if ctx.author:
-                continue
             await member.edit(mute=False)
         await ctx.send("All users have been unmuted! DM Doofy does not wish to silence the masses any longer")
     else:
@@ -176,6 +174,20 @@ async def UnlockVC(ctx):
     else:
         await ctx.send("You must be in a voice channel to use this command.")
 
+@bot.command(name="Character", help="Get information about a character")
+async def Character(ctx, character_name=None):
+    if character_name:
+        character_name = character_name.lower()
+        match character_name:
+            case "aegiscale":
+                response = "AWAITING INFO"
+            case "doofy":
+                response = "Doofy is the Dungeon Master of this campaign. He is a master storyteller and a benevolent god. All hail Doofy!"
+    else:
+        response = "Please provide a valid character name to get information about that character."
+    await ctx.send(response)
+
+#@bot.command(name="Location", help="Get information about a location")
 '''
 EVENTS
 '''
